@@ -45,6 +45,9 @@ import java.util.Iterator;
  *
  */
 public class TopMusic {
+	/**
+	 * ArrayList para el topMusic
+	 */
 	private ArrayList<Cancion> topMusic;
 
 	/**
@@ -58,10 +61,13 @@ public class TopMusic {
 	 * Añade una cancion al TopMusic
 	 * 
 	 * @param cancion
-	 *            a añadir
+	 *            a añadir al top
 	 * @param titulo
+	 *            de la cancion
 	 * @param artista
+	 *            de la cancion
 	 * @param anoGrabacion
+	 *            de la cancion
 	 */
 	boolean annadir(int index, Cancion cancion) {
 		if (!fueraDeRango(index - 1))
@@ -73,7 +79,8 @@ public class TopMusic {
 	/**
 	 * Saca una cancion del top music
 	 * 
-	 * @param cancion
+	 * @param index
+	 *            de la cancion a sacar
 	 */
 	boolean sacar(int index) {
 		if (!fueraDeRango(index - 1))
@@ -85,31 +92,33 @@ public class TopMusic {
 	/**
 	 * Sube una posicion una cancion
 	 * 
-	 * @param cancion
+	 * @param index
+	 *            de la cancion a subir
+	 * @throws MaximoTopException
 	 */
-	boolean subir(int index) {
+	boolean subir(int index) throws MaximoTopException {
 		if (!fueraDeRango(index))
 			return false;
-//		if (index - 2 < 0)
-//			return false;
+		if (index - 2 < 0)
+			throw new MaximoTopException("No puede subir mas");
 		topMusic.add(index - 2, topMusic.remove(index - 1));
 		return true;
-
 	}
 
 	/**
 	 * Baja una posicion una cancion
 	 * 
-	 * @param cancion
+	 * @param index
+	 *            de la cancion a bajar
+	 * @throws MaximoTopException
 	 */
-	boolean bajar(int index) {
+	boolean bajar(int index) throws MaximoTopException {
 		if (!fueraDeRango(index))
 			return false;
 		if (index > topMusic.size() - 1)
-			return false;
-		topMusic.add(index, topMusic.remove(index-1));
+			throw new MaximoTopException("No puede bajar mas");
+		topMusic.add(index, topMusic.remove(index - 1));
 		return true;
-
 	}
 
 	/**
@@ -131,6 +140,7 @@ public class TopMusic {
 	}
 
 	/**
+	 * Comprueba que el indice introducido no este fuera de rango
 	 * 
 	 * @param index
 	 * @return
@@ -147,10 +157,10 @@ public class TopMusic {
 	 * @param index
 	 *            Indice de la posicion
 	 * @return El indice si es valido
-	 * @throws PosicionNoValidaException 
+	 * @throws PosicionNoValidaException
 	 */
 	int posicionValida(int index) throws PosicionNoValidaException {
-		if (index-1 > topMusic.size() || index-1 < 0)
+		if (index - 1 > topMusic.size() || index - 1 < 0)
 			throw new PosicionNoValidaException("Posicion invalida");
 		return index;
 	}
@@ -158,7 +168,7 @@ public class TopMusic {
 	/**
 	 * indica si la lista esta vacia o no
 	 * 
-	 * @return
+	 * @return true si está vacio
 	 */
 	boolean isEmpty() {
 		return topMusic.isEmpty();

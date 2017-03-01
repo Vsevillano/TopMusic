@@ -24,7 +24,8 @@ public class TestTopMusic {
 	 */
 	private static TopMusic topMusic = new TopMusic();
 
-	public static void main(String[] args) throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException {
+	public static void main(String[] args)
+			throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException {
 		Menu menuGeneral = new Menu("*** TOP MUSIC ***", new String[] { "Añadir cancion", "Eliminar cancion",
 				"Subir puesto", "Bajar puesto", "Mostrar TopMusic", "Mostrar el nº1", "Salir" });
 		int opcion;
@@ -40,11 +41,12 @@ public class TestTopMusic {
 	 * 
 	 * @param opcion
 	 *            escogida
-	 * @throws AutorNoValidoException 
-	 * @throws CancionNoValidoException 
-	 * @throws PosicionNoValidaException 
+	 * @throws AutorNoValidoException
+	 * @throws CancionNoValidoException
+	 * @throws PosicionNoValidaException
 	 */
-	private static void gestionarOpciones(int opcion) throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException {
+	private static void gestionarOpciones(int opcion)
+			throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException {
 		switch (opcion) {
 		case 1:
 			// Añadir cancion
@@ -52,14 +54,11 @@ public class TestTopMusic {
 				annadirCancion();
 			} catch (AutorNoValidoException e) {
 				System.err.println(e.getMessage());
-			}
-			catch (CancionNoValidoException e) {
+			} catch (CancionNoValidoException e) {
 				System.err.println(e.getMessage());
-			}
-			catch (FechaNoValidaException e) {
+			} catch (FechaNoValidaException e) {
 				System.err.println(e.getMessage());
-			}
-			catch (PosicionNoValidaException e) {
+			} catch (PosicionNoValidaException e) {
 				System.err.println(e.getMessage());
 			}
 			break;
@@ -73,6 +72,8 @@ public class TestTopMusic {
 				subirCancion();
 			} catch (PosicionNoValidaException e) {
 				System.err.println(e.getMessage());
+			} catch (MaximoTopException e) {
+				System.err.println(e.getMessage());
 			}
 			break;
 		case 4:
@@ -80,6 +81,8 @@ public class TestTopMusic {
 			try {
 				bajarCancion();
 			} catch (PosicionNoValidaException e) {
+				System.err.println(e.getMessage());
+			} catch (MaximoTopException e) {
 				System.err.println(e.getMessage());
 			}
 			break;
@@ -118,9 +121,11 @@ public class TestTopMusic {
 
 	/**
 	 * Baja una cancion del top
-	 * @throws PosicionNoValidaException 
+	 * 
+	 * @throws PosicionNoValidaException
+	 * @throws MaximoTopException
 	 */
-	private static void bajarCancion() throws PosicionNoValidaException {
+	private static void bajarCancion() throws PosicionNoValidaException, MaximoTopException {
 		if (showIfIsEmpty()) {
 			if (!topMusic.bajar(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
 				System.out.println("No se pudo bajar la cancion");
@@ -131,9 +136,11 @@ public class TestTopMusic {
 
 	/**
 	 * Sube una cancion del top
-	 * @throws PosicionNoValidaException 
+	 * 
+	 * @throws PosicionNoValidaException
+	 * @throws MaximoTopException
 	 */
-	private static void subirCancion() throws PosicionNoValidaException {
+	private static void subirCancion() throws PosicionNoValidaException, MaximoTopException {
 		if (showIfIsEmpty()) {
 			if (!topMusic.subir(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
 				System.out.println("No se pudo subir la cancion");
@@ -144,35 +151,38 @@ public class TestTopMusic {
 
 	/**
 	 * Elimina una cancion del top
+	 * 
+	 * @throws PosicionNoValidaException
 	 */
-	private static void eliminarCancion() {
+	private static void eliminarCancion() throws PosicionNoValidaException {
 		if (showIfIsEmpty()) {
-			if (!topMusic.sacar(Teclado.leerEntero("Posicion:")))
+			if (!topMusic.sacar(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
 				System.out.println("No se pudo eliminar");
 			else
 				System.out.println("Cancion eliminada!");
-
 		}
 	}
 
 	/**
 	 * Añade una cancion al top
-	 * @throws AutorNoValidoException 
-	 * @throws CancionNoValidoException 
-	 * @throws FechaNoValidaException 
-	 * @throws PosicionNoValidaException 
+	 * 
+	 * @throws AutorNoValidoException
+	 * @throws CancionNoValidoException
+	 * @throws FechaNoValidaException
+	 * @throws PosicionNoValidaException
 	 */
-	private static void annadirCancion() throws AutorNoValidoException, CancionNoValidoException, FechaNoValidaException, PosicionNoValidaException {	
+	private static void annadirCancion()
+			throws AutorNoValidoException, CancionNoValidoException, FechaNoValidaException, PosicionNoValidaException {
 		int posicion;
-		
+
 		posicion = topMusic.posicionValida(Teclado.leerEntero("Posicion:"));
-		
-		Cancion cancion = new Cancion(Teclado.leerCadena("Titulo:"), Teclado.leerCadena("Artista:"), Teclado.leerEntero("Año de grabacion:"));
+
+		Cancion cancion = new Cancion(Teclado.leerCadena("Titulo:"), Teclado.leerCadena("Artista:"),
+				Teclado.leerEntero("Año de grabacion:"));
 		if (!topMusic.annadir(posicion, cancion)) {
 			System.out.println("No se pudo añadir");
 		} else
 			System.out.println("Cancion añadida!");
-
 	}
 
 	/**

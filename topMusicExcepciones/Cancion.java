@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  * 1. FechaNoValidaException
  * 2. CancionNoValidaException.
  * 3. AutorNoValidoException
- * 4. PosicionNoValidaExceptio
+ * 4. PosicionNoValidaException
  * 
  * Y recuerda:
  * 
@@ -46,21 +46,31 @@ import java.util.regex.Pattern;
  *
  */
 public class Cancion {
+	/**
+	 * Clase calendario
+	 */
 	private static final Calendar CALENDAR = Calendar.getInstance();
+
+	/**
+	 * Obtenemos el año actual de la clase calendario
+	 */
 	private static final int ANNIO = CALENDAR.get(Calendar.YEAR);
-	
+
 	/**
 	 * Titulo de la cancion
 	 */
 	private String titulo;
+
 	/**
 	 * Artista de la cancion
 	 */
 	private String artista;
+
 	/**
 	 * Año de grabacion
 	 */
 	private int anoGrabacion;
+
 	/**
 	 * Patron para el titulo y el artista
 	 */
@@ -82,23 +92,25 @@ public class Cancion {
 	 * @param titulo
 	 * @param artista
 	 * @param anoGrabacion
-	 * @throws AutorNoValidoException 
-	 * @throws CancionNoValidoException 
-	 * @throws FechaNoValidaException 
+	 * @throws AutorNoValidoException
+	 * @throws CancionNoValidoException
+	 * @throws FechaNoValidaException
 	 */
-	public Cancion(String titulo, String artista, int anoGrabacion) throws AutorNoValidoException, CancionNoValidoException, FechaNoValidaException {
+	public Cancion(String titulo, String artista, int anoGrabacion)
+			throws AutorNoValidoException, CancionNoValidoException, FechaNoValidaException {
 		if (nombreValido(titulo))
-		setTitulo(titulo);
-		else throw new CancionNoValidoException("El titulo no es valido");
+			setTitulo(titulo);
+		else
+			throw new CancionNoValidoException("El titulo no es valido");
 		if (nombreValido(artista))
-		setArtista(artista);
-		else throw new AutorNoValidoException("El artista no es valido");
+			setArtista(artista);
+		else
+			throw new AutorNoValidoException("El artista no es valido");
 		if (anoGrabacion > 1950 && anoGrabacion <= ANNIO)
-		setAnoGrabacion(anoGrabacion);
-		else throw new FechaNoValidaException("La fecha no es valida");
+			setAnoGrabacion(anoGrabacion);
+		else
+			throw new FechaNoValidaException("La fecha no es valida");
 	}
-
-
 
 	/**
 	 * Obtiene el titulo de la cancion
@@ -115,7 +127,7 @@ public class Cancion {
 	 * @param titulo
 	 */
 	private void setTitulo(String titulo) {
-			this.titulo = titulo;
+		this.titulo = titulo;
 	}
 
 	/**
@@ -133,7 +145,7 @@ public class Cancion {
 	 * @param artista
 	 */
 	private void setArtista(String artista) {
-			this.artista = artista;
+		this.artista = artista;
 	}
 
 	/**
@@ -151,10 +163,9 @@ public class Cancion {
 	 * @param anoGrabacion
 	 */
 	private void setAnoGrabacion(int anoGrabacion) {
-			this.anoGrabacion = anoGrabacion;
+		this.anoGrabacion = anoGrabacion;
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
