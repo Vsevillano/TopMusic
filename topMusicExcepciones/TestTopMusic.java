@@ -25,7 +25,7 @@ public class TestTopMusic {
 	private static TopMusic topMusic = new TopMusic();
 
 	public static void main(String[] args)
-			throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException {
+			throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException, MaximoTopException {
 		Menu menuGeneral = new Menu("*** TOP MUSIC ***", new String[] { "Añadir cancion", "Eliminar cancion",
 				"Subir puesto", "Bajar puesto", "Mostrar TopMusic", "Mostrar el nº1", "Salir" });
 		int opcion;
@@ -44,9 +44,10 @@ public class TestTopMusic {
 	 * @throws AutorNoValidoException
 	 * @throws CancionNoValidoException
 	 * @throws PosicionNoValidaException
+	 * @throws MaximoTopException
 	 */
 	private static void gestionarOpciones(int opcion)
-			throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException {
+			throws AutorNoValidoException, CancionNoValidoException, PosicionNoValidaException, MaximoTopException {
 		switch (opcion) {
 		case 1:
 			// Añadir cancion
@@ -64,7 +65,11 @@ public class TestTopMusic {
 			break;
 		case 2:
 			// Eliminar cancion
-			eliminarCancion();
+			try {
+				eliminarCancion();
+			} catch (PosicionNoValidaException e) {
+				System.err.println(e.getMessage());
+			}
 			break;
 		case 3:
 			// Subir cancion
@@ -127,9 +132,7 @@ public class TestTopMusic {
 	 */
 	private static void bajarCancion() throws PosicionNoValidaException, MaximoTopException {
 		if (showIfIsEmpty()) {
-			if (!topMusic.bajar(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
-				System.out.println("No se pudo bajar la cancion");
-			else
+			if (topMusic.bajar(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
 				System.out.println("Cancion bajada!");
 		}
 	}
@@ -142,9 +145,7 @@ public class TestTopMusic {
 	 */
 	private static void subirCancion() throws PosicionNoValidaException, MaximoTopException {
 		if (showIfIsEmpty()) {
-			if (!topMusic.subir(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
-				System.out.println("No se pudo subir la cancion");
-			else
+			if (topMusic.subir(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
 				System.out.println("Cancion subida!");
 		}
 	}
@@ -153,12 +154,11 @@ public class TestTopMusic {
 	 * Elimina una cancion del top
 	 * 
 	 * @throws PosicionNoValidaException
+	 * @throws MaximoTopException
 	 */
 	private static void eliminarCancion() throws PosicionNoValidaException {
 		if (showIfIsEmpty()) {
-			if (!topMusic.sacar(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
-				System.out.println("No se pudo eliminar");
-			else
+			if (topMusic.sacar(topMusic.posicionValida(Teclado.leerEntero("Posicion:"))))
 				System.out.println("Cancion eliminada!");
 		}
 	}
@@ -179,16 +179,14 @@ public class TestTopMusic {
 
 		Cancion cancion = new Cancion(Teclado.leerCadena("Titulo:"), Teclado.leerCadena("Artista:"),
 				Teclado.leerEntero("Año de grabacion:"));
-		if (!topMusic.annadir(posicion, cancion)) {
-			System.out.println("No se pudo añadir");
-		} else
+		if (topMusic.annadir(posicion, cancion))
 			System.out.println("Cancion añadida!");
 	}
 
 	/**
 	 * Comprueba que el top no este vacio
 	 * 
-	 * @return
+	 * @return true o false en funcion de si esta vacio o no
 	 */
 	private static boolean showIfIsEmpty() {
 		if (topMusic.isEmpty()) {

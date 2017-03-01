@@ -81,10 +81,12 @@ public class TopMusic {
 	 * 
 	 * @param index
 	 *            de la cancion a sacar
+	 * @throws PosicionNoValidaException 
+	 * @throws MaximoTopException 
 	 */
-	boolean sacar(int index) {
-		if (!fueraDeRango(index - 1))
-			return false;
+	boolean sacar(int index) throws PosicionNoValidaException {
+		if (!fueraDeRango(index))
+			throw new PosicionNoValidaException("Posicion invalida");
 		topMusic.remove(index - 1);
 		return true;
 	}
@@ -95,10 +97,11 @@ public class TopMusic {
 	 * @param index
 	 *            de la cancion a subir
 	 * @throws MaximoTopException
+	 * @throws PosicionNoValidaException 
 	 */
-	boolean subir(int index) throws MaximoTopException {
+	boolean subir(int index) throws MaximoTopException, PosicionNoValidaException {
 		if (!fueraDeRango(index))
-			return false;
+			throw new PosicionNoValidaException("Posicion invalida");
 		if (index - 2 < 0)
 			throw new MaximoTopException("No puede subir mas");
 		topMusic.add(index - 2, topMusic.remove(index - 1));
@@ -111,10 +114,11 @@ public class TopMusic {
 	 * @param index
 	 *            de la cancion a bajar
 	 * @throws MaximoTopException
+	 * @throws PosicionNoValidaException 
 	 */
-	boolean bajar(int index) throws MaximoTopException {
+	boolean bajar(int index) throws MaximoTopException, PosicionNoValidaException {
 		if (!fueraDeRango(index))
-			return false;
+			throw new PosicionNoValidaException("Posicion invalida");
 		if (index > topMusic.size() - 1)
 			throw new MaximoTopException("No puede bajar mas");
 		topMusic.add(index, topMusic.remove(index - 1));
