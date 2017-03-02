@@ -90,26 +90,22 @@ public class Cancion {
 	 * Constructor de la cancion
 	 * 
 	 * @param titulo
+	 *            de la cancion
 	 * @param artista
+	 *            de la cancion
 	 * @param anoGrabacion
+	 *            Año de grabacion
 	 * @throws AutorNoValidoException
+	 *             Si el autor no es valido
 	 * @throws CancionNoValidoException
+	 *             Si el titulo no es valido
 	 * @throws FechaNoValidaException
+	 *             Si la fecha no es valida
 	 */
-	public Cancion(String titulo, String artista, int anoGrabacion)
-			throws AutorNoValidoException, CancionNoValidoException, FechaNoValidaException {
-		if (nombreValido(titulo))
-			setTitulo(titulo);
-		else
-			throw new CancionNoValidoException("El titulo no es valido");
-		if (nombreValido(artista))
-			setArtista(artista);
-		else
-			throw new AutorNoValidoException("El artista no es valido");
-		if (anoGrabacion > 1950 && anoGrabacion <= ANNIO)
-			setAnoGrabacion(anoGrabacion);
-		else
-			throw new FechaNoValidaException("La fecha no es valida");
+	public Cancion(String titulo, String artista, int anoGrabacion) throws Exception {
+		setTitulo(titulo);
+		setArtista(artista);
+		setAnoGrabacion(anoGrabacion);
 	}
 
 	/**
@@ -125,15 +121,20 @@ public class Cancion {
 	 * Modifica el titulo de la cancion
 	 * 
 	 * @param titulo
+	 * @throws CancionNoValidoException
+	 *             Si el titulo de la cancion no es valido
 	 */
-	private void setTitulo(String titulo) {
-		this.titulo = titulo;
+	private void setTitulo(String titulo) throws CancionNoValidoException {
+		if (nombreValido(titulo))
+			this.titulo = titulo;
+		else
+			throw new CancionNoValidoException("El titulo no es valido");
 	}
 
 	/**
 	 * Obtiene el artista
 	 * 
-	 * @return
+	 * @return el nombre del artista
 	 */
 	private String getArtista() {
 		return artista;
@@ -143,15 +144,21 @@ public class Cancion {
 	 * Modifica el valor de artista
 	 * 
 	 * @param artista
+	 *            de la cancion
+	 * @throws AutorNoValidoException
+	 *             Si el formato del autor no es valido
 	 */
-	private void setArtista(String artista) {
-		this.artista = artista;
+	private void setArtista(String artista) throws AutorNoValidoException {
+		if (nombreValido(artista))
+			this.artista = artista;
+		else
+			throw new AutorNoValidoException("El artista no es valido");
 	}
 
 	/**
 	 * Obtiene el año de grabacion
 	 * 
-	 * @return
+	 * @return año de grabacion
 	 */
 	private int getAnoGrabacion() {
 		return anoGrabacion;
@@ -161,9 +168,15 @@ public class Cancion {
 	 * Modifica el valor de año de grabacion
 	 * 
 	 * @param anoGrabacion
+	 *            año en el cual se grabo la cancion
+	 * @throws FechaNoValidaException
+	 *             Si la fecha no es valida
 	 */
-	private void setAnoGrabacion(int anoGrabacion) {
-		this.anoGrabacion = anoGrabacion;
+	private void setAnoGrabacion(int anoGrabacion) throws FechaNoValidaException {
+		if (anoGrabacion > 1950 && anoGrabacion <= ANNIO)
+			this.anoGrabacion = anoGrabacion;
+		else
+			throw new FechaNoValidaException("La fecha no es valida");
 	}
 
 	/*
