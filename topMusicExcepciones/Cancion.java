@@ -3,6 +3,10 @@ package topMusicExcepciones;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
+import topMusicExcepciones.excepciones.AutorNoValidoException;
+import topMusicExcepciones.excepciones.CancionNoValidoException;
+import topMusicExcepciones.excepciones.FechaNoValidaException;
+
 /**
  * El usuario podrá:
  * 
@@ -102,7 +106,7 @@ public class Cancion {
 	 * @throws FechaNoValidaException
 	 *             Si la fecha no es valida
 	 */
-	public Cancion(String titulo, String artista, int anoGrabacion) throws Exception {
+	public Cancion(String titulo, String artista, int anoGrabacion) throws AutorNoValidoException, FechaNoValidaException, CancionNoValidoException {
 		setTitulo(titulo);
 		setArtista(artista);
 		setAnoGrabacion(anoGrabacion);
@@ -111,7 +115,7 @@ public class Cancion {
 	/**
 	 * Obtiene el titulo de la cancion
 	 * 
-	 * @return
+	 * @return titulo de la cancion
 	 */
 	private String getTitulo() {
 		return titulo;

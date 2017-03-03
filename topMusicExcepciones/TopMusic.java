@@ -2,6 +2,12 @@ package topMusicExcepciones;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import topMusicExcepciones.excepciones.AutorNoValidoException;
+import topMusicExcepciones.excepciones.CancionNoValidoException;
+import topMusicExcepciones.excepciones.FechaNoValidaException;
+import topMusicExcepciones.excepciones.LimiteTopException;
+import topMusicExcepciones.excepciones.PosicionNoValidaException;
 /**
  * El usuario podrá:
  * 
@@ -65,14 +71,17 @@ public class TopMusic {
 	 * @param cancion
 	 *            a añadir al top
 	 * @return true si todo es correcto
-	 * @throws PosicionNoValidaException
-	 *             En caso de que la posicion no sea valida
+	 * @throws PosicionNoValidaException 
+	 * @throws CancionNoValidoException 
+	 * @throws FechaNoValidaException 
+	 * @throws AutorNoValidoException 
 	 */
-	boolean annadir(int index, Cancion cancion) throws PosicionNoValidaException {
-		if (!fueraDeRango(index - 1))
+	void annadir(int index, String titulo, String artista, int fecha) throws PosicionNoValidaException, AutorNoValidoException, FechaNoValidaException, CancionNoValidoException {		
+		try {
+			topMusic.add(index - 1, new Cancion(titulo, artista, fecha));
+		} catch (IndexOutOfBoundsException e) {
 			throw new PosicionNoValidaException("Posicion invalida");
-		topMusic.add(index - 1, cancion);
-		return true;
+		}
 	}
 
 	/**
@@ -83,11 +92,12 @@ public class TopMusic {
 	 * @throws PosicionNoValidaException
 	 *             En caso de que la posicion no sea valida
 	 */
-	boolean sacar(int index) throws PosicionNoValidaException {
-		if (!fueraDeRango(index))
+	void sacar(int index) throws PosicionNoValidaException {
+		try {
+			topMusic.remove(index - 1);
+		} catch (IndexOutOfBoundsException e) {
 			throw new PosicionNoValidaException("Posicion invalida");
-		topMusic.remove(index - 1);
-		return true;
+		}
 	}
 
 	/**
@@ -95,18 +105,15 @@ public class TopMusic {
 	 * 
 	 * @param index
 	 *            de la cancion a subir
-	 * @throws LimiteTopException
-	 *             En caso de que una cancion alcance el limite por arriba
 	 * @throws PosicionNoValidaException
 	 *             En caso de que la posicion no sea valida
 	 */
-	boolean subir(int index) throws LimiteTopException, PosicionNoValidaException {
-		if (!fueraDeRango(index))
-			throw new PosicionNoValidaException("Posicion invalida");
-		if (index - 2 < 0)
-			throw new LimiteTopException("No puede subir mas");
-		topMusic.add(index - 2, topMusic.remove(index - 1));
-		return true;
+	void subir(int index) throws PosicionNoValidaException {
+		try {
+			topMusic.add(index - 2, topMusic.remove(index - 1));
+		} catch (IndexOutOfBoundsException e) {
+			throw new PosicionNoValidaException("No puede subir mas");
+		}
 	}
 
 	/**
@@ -114,18 +121,15 @@ public class TopMusic {
 	 * 
 	 * @param index
 	 *            de la cancion a bajar
-	 * @throws LimiteTopException
-	 *             En caso de que una cancion alcance el limite por abajo
 	 * @throws PosicionNoValidaException
 	 *             En caso de que la posicion no sea valida
 	 */
-	boolean bajar(int index) throws LimiteTopException, PosicionNoValidaException {
-		if (!fueraDeRango(index))
-			throw new PosicionNoValidaException("Posicion invalida");
-		if (index > topMusic.size() - 1)
-			throw new LimiteTopException("No puede bajar mas");
-		topMusic.add(index, topMusic.remove(index - 1));
-		return true;
+	void bajar(int index) throws PosicionNoValidaException {
+		try {
+			topMusic.add(index, topMusic.remove(index - 1));
+		} catch (IndexOutOfBoundsException e) {
+			throw new PosicionNoValidaException("No puede bajar mas");
+		}
 	}
 
 	/**
@@ -144,20 +148,6 @@ public class TopMusic {
 	 */
 	String masEscuchada() {
 		return "*** Top 1: " + topMusic.get(0) + " ***";
-	}
-
-	/**
-	 * Comprueba que el indice introducido no este fuera de rango
-	 * 
-	 * @param index
-	 *            posicion introducida
-	 * @return true si no esta fuera de rango
-	 * @throws PosicionNoValidaException
-	 */
-	private boolean fueraDeRango(int index) throws PosicionNoValidaException {
-		if (index < 0 || index > topMusic.size())
-			throw new PosicionNoValidaException("Posicion invalida");
-		return true;
 	}
 
 	/**
